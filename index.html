@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lecteur Vidéo</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            background: linear-gradient(to right, #1e3c72, #2a5298);
+            color: white;
+        }
+        .button-container {
+            margin: 20px;
+        }
+        button {
+            margin: 5px;
+            padding: 10px 20px;
+            font-size: 16px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+        .video-container {
+            margin-top: 20px;
+        }
+        iframe {
+            width: 80%;
+            height: 500px;
+            border-radius: 10px;
+        }
+        @media (max-width: 768px) {
+            iframe {
+                width: 100%;
+                height: 100vh;
+            }
+        }
+    </style>
+</head>
+<body>
+    <h1>Bienvenue dans le Site de Monsieur Bassir Live</h1>
+    <div class="button-container">
+        <button style="background-color: #ff5733;" onclick="changeVideo('https://snrt.player.easybroadcast.io/events/73_laayoune_dkrpyfs?audio=on')">Laâyoune</button>
+        <button style="background-color: #33c3ff;" onclick="changeVideo('https://snrt.player.easybroadcast.io/events/73_aloula_rxsnj7j?audio=on')">Al Aoula</button>
+        <button style="background-color: #33ff57;" onclick="changeVideo('https://snrt.player.easybroadcast.io/events/73_arryadia_vpmovcf')">Arryadia</button>
+        <button style="background-color: #ff33d4;" onclick="changeVideo('https://snrt.player.easybroadcast.io/events/73_almaghribia_mulugzo')">Al Maghribia</button>
+        <button style="background-color: #ffd700;" onclick="changeVideo('https://idara.medi1tv.ma/rss/embed/medi1news-auto/live-medi1tv-maghreb.aspx?w=100%&h=100', true)">Medi1TV</button>
+        <button style="background-color: #ff33d4;" onclick="changeVideo('https://ok.ru/videoembed/9463549402698?autoplay=1')">2M</button>
+        <button style="background-color: #0073e6;" onclick="changeVideo('https://www.tf1info.fr/direct/', true)">LCI</button>
+    </div>
+    <div class="video-container">
+        <iframe id="videoFrame" src="" allow="fullscreen" frameborder="0"></iframe>
+    </div>
+
+    <script>
+        function changeVideo(url, autoplay = false) {
+            let videoFrame = document.getElementById('videoFrame');
+            if (url === 'https://www.tf1info.fr/direct/') {
+                videoFrame.src = 'https://www.tf1info.fr/direct/';
+            } else {
+                videoFrame.src = autoplay ? url + '&autoplay=1' : url;
+            }
+        }
+    </script>
+</body>
+</html>
