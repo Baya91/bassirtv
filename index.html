@@ -10,6 +10,7 @@
             text-align: center;
             background: linear-gradient(to right, #1e3c72, #2a5298);
             color: white;
+            position: relative;
         }
         .button-container {
             margin: 20px;
@@ -25,14 +26,16 @@
         }
         .video-container {
             margin-top: 20px;
+            position: relative;
         }
-        iframe {
+        iframe, video {
             width: 80%;
             height: 500px;
             border-radius: 10px;
+            border: none;
         }
         @media (max-width: 768px) {
-            iframe {
+            iframe, video {
                 width: 100%;
                 height: 100vh;
             }
@@ -40,29 +43,109 @@
     </style>
 </head>
 <body>
-    <h1>Bienvenue dans le Site de Monsieur Bassir Live</h1>
+    <h1>Bassir </h1>
+
     <div class="button-container">
-        <button style="background-color: #ff5733;" onclick="changeVideo('https://snrt.player.easybroadcast.io/events/73_laayoune_dkrpyfs?audio=on')">Laâyoune</button>
-        <button style="background-color: #33c3ff;" onclick="changeVideo('https://snrt.player.easybroadcast.io/events/73_aloula_rxsnj7j?audio=on')">Al Aoula</button>
-        <button style="background-color: #33ff57;" onclick="changeVideo('https://snrt.player.easybroadcast.io/events/73_arryadia_vpmovcf')">Arryadia</button>
-        <button style="background-color: #ff33d4;" onclick="changeVideo('https://snrt.player.easybroadcast.io/events/73_almaghribia_mulugzo')">Al Maghribia</button>
-        <button style="background-color: #ffd700;" onclick="changeVideo('https://idara.medi1tv.ma/rss/embed/medi1news-auto/live-medi1tv-maghreb.aspx?w=100%&h=100', true)">Medi1TV</button>
+        <button style="background-color: #ff5733;" onclick="changeVideo('https://snrt.player.easybroadcast.io/events/73_laayoune_dkrpyfs?audio=on&autoplay=1')">Laâyoune</button>
+        <button style="background-color: #33c3ff;" onclick="changeVideo('https://snrt.player.easybroadcast.io/events/73_aloula_rxsnj7j?audio=on&autoplay=1')">Al Aoula</button>
+        <button style="background-color: #33ff57;" onclick="changeVideo('https://snrt.player.easybroadcast.io/events/73_arryadia_vpmovcf?audio=on&autoplay=1')">Arryadia</button>
+        <button style="background-color: #ff33d4;" onclick="changeVideo('https://snrt.player.easybroadcast.io/events/73_almaghribia_mulugzo?audio=on&autoplay=1')">Al Maghribia</button>
+        <button style="background-color: #ffd700;" onclick="changeVideo('https://idara.medi1tv.ma/rss/embed/medi1news-auto/live-medi1tv-maghreb.aspx?w=100%&h=100&autoplay=1')">Medi1TV</button>
         <button style="background-color: #ff33d4;" onclick="changeVideo('https://ok.ru/videoembed/9463549402698?autoplay=1')">2M</button>
-        <button style="background-color: #0073e6;" onclick="changeVideo('https://www.tf1info.fr/direct/', true)">LCI</button>
+        <button style="background-color: #5e35b1;" onclick="showIframe()">National Geographic</button>
+        <button style="background-color: #33ff57;" onclick="changeVideo('blob:https://foutni.com/2dbfaefe-0788-4baa-857c-7316bddeaef0')">2M-222</button>
     </div>
+
     <div class="video-container">
-        <iframe id="videoFrame" src="" allow="fullscreen" frameborder="0"></iframe>
+        <!-- الفيديو الحالي من نوع video، والذي سيبدأ التشغيل عند الضغط -->
+        <video id="videoPlayer" class="bs-v-supporting-ad-play" style="position: absolute; top: 0px; left: 0px; width: 100%; height: 100%; display: none;" controls>
+            <source id="videoSource" src="" type="video/mp4">
+        </video>
+
+        <!-- الـ iframe لتغيير الفيديو عند الضغط على الأزرار -->
+        <iframe id="videoFrame" src="" allow="autoplay; fullscreen" frameborder="0" height="500" width="80%" style="display: none;"></iframe>
+
+        <!-- الفيديو الحالي من موقع 3rbcafee والذي سيتم تحميله عند الضغط على الزر -->
+        <div id="iframeContainer" style="display: none;">
+            <iframe __idm_frm__="4234" allowfullscreen="" allow="encrypted-media" frameborder="0" height="375" id="iframe" scrolling="no"
+                src="https://watch.3rbcafee.com/2023/06/test.html" width="100%" __idm_id__="7618561">
+            </iframe>
+        </div>
     </div>
 
     <script>
-        function changeVideo(url, autoplay = false) {
+        // دالة لتغيير الفيديو داخل الـ iframe أو الفيديو العادي
+        function changeVideo(url) {
             let videoFrame = document.getElementById('videoFrame');
-            if (url === 'https://www.tf1info.fr/direct/') {
-                videoFrame.src = 'https://www.tf1info.fr/direct/';
+            let videoPlayer = document.getElementById('videoPlayer');
+            let iframeContainer = document.getElementById('iframeContainer');
+            let videoSource = document.getElementById('videoSource');
+            
+            // إيقاف أي فيديو أو بث جاري
+            stopCurrentMedia();
+            
+            // إخفاء الـ iframe و video الحاليين
+            videoFrame.style.display = 'none';
+            videoPlayer.style.display = 'none';
+            iframeContainer.style.display = 'none';
+            
+            // إذا كان الفيديو رابطًا لـ mp4 أو blob
+            if (url.includes('.mp4') || url.includes('blob:')) {
+                videoPlayer.style.display = 'block';
+                videoSource.src = url;
+                videoPlayer.load();
+                videoPlayer.play();
             } else {
-                videoFrame.src = autoplay ? url + '&autoplay=1' : url;
+                videoFrame.style.display = 'block';
+                videoFrame.src = url.includes('?') ? url + '&autoplay=1' : url + '?autoplay=1';
             }
         }
+
+        // دالة لعرض iframe من 3rbcafee عند الضغط على الزر
+        function showIframe() {
+            let iframeContainer = document.getElementById('iframeContainer');
+            let videoPlayer = document.getElementById('videoPlayer');
+            let videoFrame = document.getElementById('videoFrame');
+            
+            // إيقاف أي فيديو أو بث جاري
+            stopCurrentMedia();
+            
+            // إخفاء الفيديو العادي
+            videoPlayer.style.display = 'none';
+            videoFrame.style.display = 'none';
+            
+            // إظهار الـ iframe من 3rbcafee
+            iframeContainer.style.display = 'block';
+        }
+
+        // دالة لإيقاف الفيديو أو البث الحالي
+        function stopCurrentMedia() {
+            let videoPlayer = document.getElementById('videoPlayer');
+            let videoFrame = document.getElementById('videoFrame');
+            let iframeContainer = document.getElementById('iframeContainer');
+            
+            // إيقاف الفيديو إذا كان قيد التشغيل
+            if (videoPlayer.style.display === 'block') {
+                videoPlayer.pause();
+                videoPlayer.currentTime = 0;
+            }
+            
+            // إيقاف iframe (إذا كان مشغل)
+            if (videoFrame.style.display === 'block') {
+                videoFrame.src = ''; // إيقاف البث بتغيير src
+            }
+            
+            // إخفاء iframe 3rbcafee إذا كان مشغل
+            if (iframeContainer.style.display === 'block') {
+                iframeContainer.style.display = 'none';
+            }
+        }
+
+        // تحميل القناة الافتراضية عند فتح الصفحة (Laâyoune)
+        window.onload = function() {
+            // تشغيل قناة Laâyoune بشكل افتراضي عند فتح الصفحة
+            changeVideo('https://snrt.player.easybroadcast.io/events/73_laayoune_dkrpyfs?audio=on&autoplay=1');
+        };
     </script>
 </body>
 </html>
