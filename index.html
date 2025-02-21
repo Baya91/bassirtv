@@ -53,7 +53,7 @@
         <button style="background-color: #ffd700;" onclick="changeVideo('https://idara.medi1tv.ma/rss/embed/medi1news-auto/live-medi1tv-maghreb.aspx?w=100%&h=100&autoplay=1')">Medi1TV</button>
         <button style="background-color: #ff33d4;" onclick="changeVideo('https://ok.ru/videoembed/9463549402698?autoplay=1')">2M</button>
         <button style="background-color: #5e35b1;" onclick="showIframe()">National Geographic</button>
-        <button style="background-color: #33ff57;" onclick="changeVideo('blob:https://foutni.com/2dbfaefe-0788-4baa-857c-7316bddeaef0')">2M-222</button>
+       
     </div>
 
     <div class="video-container">
@@ -75,77 +75,81 @@
 
     <script>
         // دالة لتغيير الفيديو داخل الـ iframe أو الفيديو العادي
-        function changeVideo(url) {
-            let videoFrame = document.getElementById('videoFrame');
-            let videoPlayer = document.getElementById('videoPlayer');
-            let iframeContainer = document.getElementById('iframeContainer');
-            let videoSource = document.getElementById('videoSource');
-            
-            // إيقاف أي فيديو أو بث جاري
-            stopCurrentMedia();
-            
-            // إخفاء الـ iframe و video الحاليين
-            videoFrame.style.display = 'none';
-            videoPlayer.style.display = 'none';
-            iframeContainer.style.display = 'none';
-            
-            // إذا كان الفيديو رابطًا لـ mp4 أو blob
-            if (url.includes('.mp4') || url.includes('blob:')) {
-                videoPlayer.style.display = 'block';
-                videoSource.src = url;
-                videoPlayer.load();
-                videoPlayer.play();
-            } else {
-                videoFrame.style.display = 'block';
-                videoFrame.src = url.includes('?') ? url + '&autoplay=1' : url + '?autoplay=1';
-            }
-        }
-
         // دالة لعرض iframe من 3rbcafee عند الضغط على الزر
-        function showIframe() {
-            let iframeContainer = document.getElementById('iframeContainer');
-            let videoPlayer = document.getElementById('videoPlayer');
-            let videoFrame = document.getElementById('videoFrame');
-            
-            // إيقاف أي فيديو أو بث جاري
-            stopCurrentMedia();
-            
-            // إخفاء الفيديو العادي
-            videoPlayer.style.display = 'none';
-            videoFrame.style.display = 'none';
-            
-            // إظهار الـ iframe من 3rbcafee
-            iframeContainer.style.display = 'block';
-        }
+function showIframe() {
+    let iframeContainer = document.getElementById('iframeContainer');
+    let videoPlayer = document.getElementById('videoPlayer');
+    let videoFrame = document.getElementById('videoFrame');
+    
+    // إيقاف أي فيديو أو بث جاري
+    stopCurrentMedia();
+    
+    // إخفاء الفيديو العادي
+    videoPlayer.style.display = 'none';
+    
+    // إظهار الـ iframe من 3rbcafee
+    iframeContainer.style.display = 'block';
+    
+    // إخفاء الـ iframe الآخر إذا كان ظاهرًا
+    videoFrame.style.display = 'none';
+}
 
-        // دالة لإيقاف الفيديو أو البث الحالي
-        function stopCurrentMedia() {
-            let videoPlayer = document.getElementById('videoPlayer');
-            let videoFrame = document.getElementById('videoFrame');
-            let iframeContainer = document.getElementById('iframeContainer');
-            
-            // إيقاف الفيديو إذا كان قيد التشغيل
-            if (videoPlayer.style.display === 'block') {
-                videoPlayer.pause();
-                videoPlayer.currentTime = 0;
-            }
-            
-            // إيقاف iframe (إذا كان مشغل)
-            if (videoFrame.style.display === 'block') {
-                videoFrame.src = ''; // إيقاف البث بتغيير src
-            }
-            
-            // إخفاء iframe 3rbcafee إذا كان مشغل
-            if (iframeContainer.style.display === 'block') {
-                iframeContainer.style.display = 'none';
-            }
-        }
+// دالة لتغيير الفيديو داخل الـ iframe أو الفيديو العادي
+function changeVideo(url) {
+    let videoFrame = document.getElementById('videoFrame');
+    let videoPlayer = document.getElementById('videoPlayer');
+    let iframeContainer = document.getElementById('iframeContainer');
+    let videoSource = document.getElementById('videoSource');
+    
+    // إيقاف أي فيديو أو بث جاري
+    stopCurrentMedia();
+    
+    // إخفاء الـ iframe و video الحاليين
+    videoFrame.style.display = 'none';
+    videoPlayer.style.display = 'none';
+    iframeContainer.style.display = 'none';
+    
+    // إذا كان الفيديو رابطًا لـ mp4 أو blob
+    if (url.includes('.mp4') || url.includes('blob:')) {
+        videoPlayer.style.display = 'block';
+        videoSource.src = url;
+        videoPlayer.load();
+        videoPlayer.play();
+    } else {
+        videoFrame.style.display = 'block';
+        videoFrame.src = url.includes('?') ? url + '&autoplay=1' : url + '?autoplay=1';
+    }
+}
 
-        // تحميل القناة الافتراضية عند فتح الصفحة (Laâyoune)
-        window.onload = function() {
-            // تشغيل قناة Laâyoune بشكل افتراضي عند فتح الصفحة
-            changeVideo('https://snrt.player.easybroadcast.io/events/73_laayoune_dkrpyfs?audio=on&autoplay=1');
-        };
+// دالة لإيقاف الفيديو أو البث الحالي
+function stopCurrentMedia() {
+    let videoPlayer = document.getElementById('videoPlayer');
+    let videoFrame = document.getElementById('videoFrame');
+    let iframeContainer = document.getElementById('iframeContainer');
+    
+    // إيقاف الفيديو إذا كان قيد التشغيل
+    if (videoPlayer.style.display === 'block') {
+        videoPlayer.pause();
+        videoPlayer.currentTime = 0;
+    }
+    
+    // إيقاف iframe (إذا كان مشغل)
+    if (videoFrame.style.display === 'block') {
+        videoFrame.src = ''; // إيقاف البث بتغيير src
+    }
+    
+    // إخفاء iframe 3rbcafee إذا كان مشغل
+    if (iframeContainer.style.display === 'block') {
+        iframeContainer.style.display = 'none';
+    }
+}
+
+// تحميل القناة الافتراضية عند فتح الصفحة (Laâyoune)
+window.onload = function() {
+    // تشغيل قناة Laâyoune بشكل افتراضي عند فتح الصفحة
+    changeVideo('https://snrt.player.easybroadcast.io/events/73_laayoune_dkrpyfs?audio=on&autoplay=1');
+};
+
     </script>
 </body>
 </html>
